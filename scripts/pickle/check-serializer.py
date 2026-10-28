@@ -13,11 +13,11 @@
 #
 # Usage: python check-serializer.py <dump>
 import json
+import math
 import pickle
 import sys
 
 import generate
-
 
 # values of cases.py that are known to read back differently and why
 KNOWN = {
@@ -40,7 +40,7 @@ def same(a, b, seen):
     if type(a) is not type(b):
         return False
     if isinstance(a, float):
-        return a == b or (a != a and b != b)
+        return a == b or (math.isnan(a) and math.isnan(b))
     if isinstance(a, (list, tuple)):
         return len(a) == len(b) and all(same(x, y, seen) for x, y in zip(a, b))
     if isinstance(a, dict):
@@ -104,13 +104,13 @@ def main():
                     written = pickle.loads(bytes.fromhex(case["output"]))
                 except Exception as e:  # noqa: BLE001
                     failures += 1
-                    print("%s (%d): %s: %s" % (case["name"], case["protocol"], type(e).__name__, e))
+                    print("{} ({}): {}: {}".format(case["name"], case["protocol"], type(e).__name__, e))
                     continue
                 if not same(original, written, set()):
                     failures += 1
-                    print("%s (%d): different object" % (case["name"], case["protocol"]))
-                    print("  expected: %r" % (original,))
-                    print("  got:      %r" % (written,))
+                    print("{} ({}): different object".format(case["name"], case["protocol"]))
+                    print(f"  expected: {original!r}")
+                    print(f"  got:      {written!r}")
             expected = generate.run_case(bytes.fromhex(case["input"]))
             got = generate.run_case(bytes.fromhex(case["output"]))
             checked += 1
@@ -118,16 +118,16 @@ def main():
                 continue
             if "value" not in got:
                 failures += 1
-                print("%s (%d): %s" % (case["name"], case["protocol"], got.get("error")))
+                print("{} ({}): {}".format(case["name"], case["protocol"], got.get("error")))
                 continue
             a = normalize(expected["value"])
             b = normalize(got["value"])
             if json.dumps(a) != json.dumps(b):
                 failures += 1
-                print("%s (%d): different value" % (case["name"], case["protocol"]))
-                print("  expected: %s" % json.dumps(a)[:300])
-                print("  got:      %s" % json.dumps(b)[:300])
-    print("%d checked, %d failures" % (checked, failures))
+                print("{} ({}): different value".format(case["name"], case["protocol"]))
+                print(f"  expected: {json.dumps(a)[:300]}")
+                print(f"  got:      {json.dumps(b)[:300]}")
+    print(f"{checked} checked, {failures} failures")
     sys.exit(1 if failures else 0)
 
 

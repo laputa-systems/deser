@@ -41,10 +41,10 @@ def dump(value, indent=0):
     pad = "  " * (indent + 1)
     if isinstance(value, dict) and value:
         items = [f"{pad}{json.dumps(k)}: {dump(v, indent + 1)}" for k, v in value.items()]
-        return "{\n%s\n%s}" % (",\n".join(items), "  " * indent)
+        return "{{\n{}\n{}}}".format(",\n".join(items), "  " * indent)
     if isinstance(value, list) and value:
         items = [pad + json.dumps(item, ensure_ascii=False) for item in value]
-        return "[\n%s\n%s]" % (",\n".join(items), "  " * indent)
+        return "[\n{}\n{}]".format(",\n".join(items), "  " * indent)
     return json.dumps(value, ensure_ascii=False)
 
 

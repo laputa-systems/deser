@@ -125,9 +125,13 @@ format-check:
 		"fmt:benchmark" "cd benchmark && cargo fmt --all -- --check" \
 		$(foreach ws,$(EXTRA_WORKSPACES),"fmt:$(notdir $(ws))" "cd $(ws) && cargo fmt --all -- --check")
 
+# Python helpers linted by ruff (no config file: latest ruff defaults).
+RUFF_FILES := deser-template-json/generate.py fuzz/seed-corpus.py scripts/miri-slowest scripts/utility-runner scripts/pickle/generate.py scripts/pickle/cases.py scripts/pickle/check-serializer.py scripts/ini/capture-configparser.py scripts/ini/references/write.py scripts/ini/references/run-configparser.py scripts/ini/references/inputs.py examples/pickle/python/exchange.py examples/pickle/python/todo.py
+
 lint:
 	@rustup component add clippy > /dev/null 2>&1
 	@$(RUN) -j 5 \
+		"ruff" "uv run --with ruff ruff check $(RUFF_FILES)" \
 		"clippy" "cargo clippy --workspace --all-targets --all-features -- -D warnings" \
 		"clippy:benchmark" "cd benchmark && RUSTC_BOOTSTRAP=1 cargo clippy --all-targets --all-features -- -D warnings" \
 		$(foreach ws,$(EXTRA_WORKSPACES),"clippy:$(notdir $(ws))" "cd $(ws) && cargo clippy --all-targets -- -D warnings")

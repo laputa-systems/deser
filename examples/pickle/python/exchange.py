@@ -29,14 +29,13 @@ def categories():
 
 def show(value):
     if isinstance(value, todo.Category):
-        print("python: category %r" % value.name)
+        print(f"python: category {value.name!r}")
         for child in value.children:
             print(
-                "python:   child %r, parent is the root: %s"
-                % (child.name, child.parent is value)
+                f"python:   child {child.name!r}, parent is the root: {child.parent is value}"
             )
     else:
-        print("python: %r" % (value,))
+        print(f"python: {value!r}")
 
 
 def main():

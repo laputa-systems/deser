@@ -123,7 +123,7 @@ TOKEN_RE = re.compile(
 
 
 class Token:
-    __slots__ = ("kind", "text", "start", "end")
+    __slots__ = ("end", "kind", "start", "text")
 
     def __init__(self, kind, text, start, end):
         self.kind = kind
@@ -478,6 +478,7 @@ def rustfmt(source):
         input=source,
         capture_output=True,
         text=True,
+        check=False,
     )
     if rv.returncode != 0:
         raise TemplateError(f"rustfmt failed:\n{rv.stderr}")

@@ -115,7 +115,7 @@ def get_terminal_width() -> int:
     """Get current terminal width, with fallback."""
     try:
         return shutil.get_terminal_size().columns
-    except Exception:
+    except OSError:
         return 80
 
 
@@ -131,10 +131,10 @@ def truncate_line(text: str, max_width: int) -> str:
 def format_duration(seconds: float) -> str:
     """Format a duration in a compact, human-readable form."""
     if seconds < 1:
-        ms = int(round(seconds * 1000))
+        ms = round(seconds * 1000)
         return f"{ms}ms"
 
-    total_seconds = int(round(seconds))
+    total_seconds = round(seconds)
     minutes, sec = divmod(total_seconds, 60)
     hours, minutes = divmod(minutes, 60)
 
@@ -283,7 +283,7 @@ class ParallelRunner:
                 term_size = shutil.get_terminal_size()
                 winsize = struct.pack("HHHH", term_size.lines, term_size.columns, 0, 0)
                 fcntl.ioctl(slave_fd, termios.TIOCSWINSZ, winsize)
-            except Exception:
+            except Exception:  # noqa: BLE001, S110
                 pass
 
             try:
@@ -299,8 +299,6 @@ class ParallelRunner:
                 slave_fd = -1
 
                 # Read output from master_fd
-                loop = asyncio.get_event_loop()
-
                 def read_output():
                     try:
                         while True:
@@ -311,7 +309,7 @@ class ParallelRunner:
                                 return data
                             except OSError:
                                 break
-                    except Exception:
+                    except Exception:  # noqa: BLE001, S110
                         pass
                     return b""
 
@@ -347,7 +345,7 @@ class ParallelRunner:
                         except (BlockingIOError, OSError):
                             pass
                         break
-                    except asyncio.TimeoutError:
+                    except TimeoutError:
                         pass  # Process still running
 
                     try:

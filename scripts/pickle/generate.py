@@ -47,7 +47,7 @@ import warnings
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import cases  # noqa: E402
+import cases
 
 MAX_INPUT = 1 << 20
 TEST_FILES = [
@@ -64,7 +64,7 @@ TRUNCATED = ["create-data", "tree", "recursive-multi"]
 class Rec:
     """What happened to an instance of a stand-in class."""
 
-    __slots__ = ("args", "kwargs", "state", "list_items", "dict_items")
+    __slots__ = ("args", "dict_items", "kwargs", "list_items", "state")
 
     def __init__(self, args, kwargs):
         self.args = args
@@ -443,7 +443,7 @@ def tag_atom(value):
         return [kind.__name__, []]
     if isinstance(value, FrozenSetMarker):
         return ["frozenset", []]
-    raise TypeError("unexpected value %r" % (value,))
+    raise TypeError(f"unexpected value {value!r}")
 
 
 def tag(root):
@@ -508,7 +508,7 @@ def run_case(data):
     except RecursionError:
         return {"error": "RecursionError"}
     except Exception as e:  # noqa: BLE001
-        return {"error": "%s: %s" % (type(e).__name__, e)}
+        return {"error": f"{type(e).__name__}: {e}"}
     result = {}
     if f.tell() < len(data):
         result["trailing"] = True
@@ -525,9 +525,12 @@ def harvest(path):
     with open(path, encoding="utf-8") as f:
         tree = ast.parse(f.read())
     for node in ast.walk(tree):
-        if isinstance(node, ast.Constant) and isinstance(node.value, bytes):
-            if 0 < len(node.value) <= MAX_INPUT:
-                yield node.value
+        if (
+            isinstance(node, ast.Constant)
+            and isinstance(node.value, bytes)
+            and 0 < len(node.value) <= MAX_INPUT
+        ):
+            yield node.value
 
 
 def collect(cpython):
@@ -539,21 +542,21 @@ def collect(cpython):
             sources.append(source)
 
     for name, data in cases.INPUTS.items():
-        add(data, "deser:%s" % name)
+        add(data, f"deser:{name}")
     for name, make in cases.VALUES.items():
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             try:
                 data = pickle.dumps(make(), proto)
-            except Exception:  # noqa: BLE001
+            except Exception:  # noqa: BLE001, S112
                 continue
-            add(data, "deser:value:%s:%d" % (name, proto))
-            add(pickletools.optimize(data), "deser:value:%s:%d:optimized" % (name, proto))
+            add(data, f"deser:value:{name}:{proto}")
+            add(pickletools.optimize(data), f"deser:value:{name}:{proto}:optimized")
             if name in TRUNCATED and proto in (0, 4):
                 for end in range(len(data)):
-                    add(data[:end], "deser:value:%s:%d:truncated" % (name, proto))
+                    add(data[:end], f"deser:value:{name}:{proto}:truncated")
     for rel in TEST_FILES:
         for data in harvest(os.path.join(cpython, rel)):
-            add(data, "cpython/%s" % rel)
+            add(data, f"cpython/{rel}")
     return inputs
 
 
@@ -578,7 +581,7 @@ def main():
         f.write("[\n")
         f.write(",\n".join(json.dumps(case, ensure_ascii=False) for case in results))
         f.write("\n]\n")
-    print("%d cases" % len(results), file=sys.stderr)
+    print(f"{len(results)} cases", file=sys.stderr)
 
 
 if __name__ == "__main__":

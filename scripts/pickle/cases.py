@@ -25,7 +25,7 @@ class Slots:
 
 
 class SlotsAndDict:
-    __slots__ = ("x", "__dict__")
+    __slots__ = ("__dict__", "x")
 
     def __init__(self, x, **kwargs):
         self.x = x
@@ -269,7 +269,7 @@ VALUES = {
     "bytes-long": lambda: b"y" * 300,
     "bytearray": lambda: bytearray(b"ab\xff"),
     "bytearray-empty": lambda: bytearray(),
-    "list-empty": lambda: [],
+    "list-empty": list,
     "list": lambda: [1, "two", 3.0, None, True],
     "list-long": lambda: list(range(1001)),
     "tuple-empty": lambda: (),
@@ -278,7 +278,7 @@ VALUES = {
     "tuple-3": lambda: (1, 2, 3),
     "tuple-4": lambda: (1, 2, 3, 4),
     "tuple-nested": lambda: ((), ((),), (1, (2, (3,)))),
-    "dict-empty": lambda: {},
+    "dict-empty": dict,
     "dict": lambda: {"a": 1, "b": [1, 2], "c": {"d": None}},
     "dict-keys": lambda: {1: "int", -5: "neg", "s": "str", b"b": "bytes", (1, "t"): "tuple",
                           None: "none", 1.5: "float", frozenset([1]): "frozenset"},
@@ -318,7 +318,7 @@ VALUES = {
     "decimal": lambda: decimal.Decimal("1.50"),
     "date": lambda: datetime.date(2024, 2, 29),
     "datetime": lambda: datetime.datetime(2024, 2, 29, 12, 30, 15, 123456),
-    "datetime-tz": lambda: datetime.datetime(2024, 1, 1, tzinfo=datetime.timezone.utc),
+    "datetime-tz": lambda: datetime.datetime(2024, 1, 1, tzinfo=datetime.UTC),
     "timedelta": lambda: datetime.timedelta(days=1, seconds=2),
     "range": lambda: range(1, 10, 2),
     "slice": lambda: slice(1, None, 2),

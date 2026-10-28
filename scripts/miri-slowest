@@ -73,6 +73,7 @@ def run(crate):
         env=env,
         capture_output=True,
         text=True,
+        check=False,
     )
     wall = time.monotonic() - start
     tests = []
@@ -89,12 +90,14 @@ def main():
     parser.add_argument("crates", nargs="*", default=DEFAULT_CRATES)
     args = parser.parse_args()
 
-    subprocess.run(["cargo", "+nightly", "miri", "setup"], cwd=ROOT, capture_output=True)
+    subprocess.run(
+        ["cargo", "+nightly", "miri", "setup"], cwd=ROOT, capture_output=True, check=False
+    )
     with ThreadPoolExecutor(max_workers=len(args.crates)) as pool:
         results = list(pool.map(run, args.crates))
 
     everything = sorted((t for _, tests, _, _ in results for t in tests), reverse=True)
-    print(f"slowest tests (miri clock):")
+    print("slowest tests (miri clock):")
     for secs, crate, name, status in everything[: args.n]:
         mark = "" if status == "ok" else f" [{status}]"
         print(f"  {secs:8.1f}s  {crate}: {name}{mark}")

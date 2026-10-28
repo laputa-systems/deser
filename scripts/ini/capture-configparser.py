@@ -153,18 +153,19 @@ def to_json(doc):
         return ",\n".join(pad + item for item in items)
 
     parts = [
-        '  "tests": [\n%s\n  ]' % block(map(dump, doc["tests"]), 2),
-        '  "parser": %s' % dump(doc["parser"]),
-        '  "options": {\n%s\n  }'
-        % block((f"{dump(k)}: {dump(v)}" for k, v in doc["options"].items()), 2),
+        '  "tests": [\n{}\n  ]'.format(block(map(dump, doc["tests"]), 2)),
+        '  "parser": {}'.format(dump(doc["parser"])),
+        '  "options": {{\n{}\n  }}'.format(
+            block((f"{dump(k)}: {dump(v)}" for k, v in doc["options"].items()), 2)
+        ),
     ]
     if "result" in doc:
         sections = block(map(dump, doc["result"]["sections"]), 3)
-        sections = "[\n%s\n    ]" % sections if sections else "[]"
-        parts.append('  "result": {\n    "sections": %s\n  }' % sections)
+        sections = f"[\n{sections}\n    ]" if sections else "[]"
+        parts.append(f'  "result": {{\n    "sections": {sections}\n  }}')
     else:
-        parts.append('  "error": %s' % dump(doc["error"]))
-    return "{\n%s\n}\n" % ",\n".join(parts)
+        parts.append('  "error": {}'.format(dump(doc["error"])))
+    return "{{\n{}\n}}\n".format(",\n".join(parts))
 
 
 def main():
@@ -172,10 +173,11 @@ def main():
         os.symlink(os.path.join(SRC, "Lib", "test"), os.path.join(tmp, "test"))
         sys.path.insert(0, tmp)
         suite = unittest.defaultTestLoader.loadTestsFromName("test.test_configparser")
-        runner = unittest.TextTestRunner(
-            resultclass=Recorder, verbosity=0, stream=open(os.devnull, "w")
-        )
-        result = runner.run(suite)
+        with open(os.devnull, "w") as stream:
+            runner = unittest.TextTestRunner(
+                resultclass=Recorder, verbosity=0, stream=stream
+            )
+            result = runner.run(suite)
         if not result.wasSuccessful():
             sys.exit(f"test_configparser failed: {result}")
 
