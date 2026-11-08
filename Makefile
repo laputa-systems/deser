@@ -116,7 +116,7 @@ RUFF_FILES := deser-template-json/generate.py fuzz/seed-corpus.py scripts/miri-s
 lint:
 	@rustup component add clippy > /dev/null 2>&1
 	@$(RUN) -j 5 \
-		"ruff" "uv run --with ruff ruff check $(RUFF_FILES)" \
+		"ruff" "if command -v uv >/dev/null 2>&1; then uv run --with ruff ruff check $(RUFF_FILES); else ruff check $(RUFF_FILES); fi" \
 		"clippy" "cargo clippy --workspace --all-targets --all-features -- -D warnings" \
 		"clippy:benchmark" "cd benchmark && RUSTC_BOOTSTRAP=1 cargo clippy --all-targets --all-features -- -D warnings" \
 		$(foreach ws,$(EXTRA_WORKSPACES),"clippy:$(notdir $(ws))" "cd $(ws) && cargo clippy --all-targets -- -D warnings")
