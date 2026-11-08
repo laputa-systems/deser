@@ -72,6 +72,7 @@ FUZZ_JOBS ?= $(shell getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)
 all: test
 
 test:
+	@rustup show active-toolchain >/dev/null 2>&1 || true
 	@$(RUN) -j 2 \
 		"test" "cargo test --workspace --all-features --tests" \
 		"doctest" "cargo test --workspace --all-features --doc"
