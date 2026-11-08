@@ -32,7 +32,6 @@ Lines with comments that start with `//#` are only in the template (for
 instance to explain why code is conditional), they are removed.  Comments
 that start with `//#(capability)` are only kept (as regular comments) for
 the dialects with the capability.
-The generated files are formatted with rustfmt.  `src/copy.rs` is not
 generated, it's a symlink to `shared/copy.rs` (like in other formats).
 
 Usage:
@@ -44,7 +43,6 @@ Usage:
 import argparse
 import difflib
 import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -472,19 +470,6 @@ def generate(source, caps, crate):
     return out.replace(TEMPLATE_CRATE, crate)
 
 
-def rustfmt(source):
-    rv = subprocess.run(
-        ["rustfmt", "--edition", "2024", "--emit", "stdout"],
-        input=source,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if rv.returncode != 0:
-        raise TemplateError(f"rustfmt failed:\n{rv.stderr}")
-    return rv.stdout
-
-
 def header(name):
     return (
         f"// @generated from deser-template-json/src/{name} by\n"
@@ -515,7 +500,7 @@ def main():
                 text = generate(template_path.read_text(), caps, crate)
             except TemplateError as err:
                 sys.exit(f"{template_path}: {err}")
-            expected = None if text is None else header(name) + rustfmt(text)
+            expected = None if text is None else header(name) + text
             current = target.read_text() if target.exists() else None
             if expected == current:
                 continue

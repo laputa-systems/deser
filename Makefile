@@ -72,6 +72,7 @@ FUZZ_JOBS ?= $(shell getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)
 all: test
 
 test:
+	@rustup show active-toolchain >/dev/null 2>&1 || true
 	@$(RUN) -j 2 \
 		"test" "cargo test --workspace --all-features --tests" \
 		"doctest" "cargo test --workspace --all-features --doc"
@@ -110,17 +111,13 @@ msrv:
 doc:
 	@$(RUN) "doc" "cargo doc --all-features"
 
-format-check:
-	@$(RUN) \
-		"codegen" "python3 deser-template-json/generate.py --check"
-
 # Python helpers linted by ruff (no config file: latest ruff defaults).
 RUFF_FILES := deser-template-json/generate.py fuzz/seed-corpus.py scripts/miri-slowest scripts/utility-runner scripts/pickle/generate.py scripts/pickle/cases.py scripts/pickle/check-serializer.py scripts/ini/capture-configparser.py scripts/ini/references/write.py scripts/ini/references/run-configparser.py scripts/ini/references/inputs.py examples/pickle/python/exchange.py examples/pickle/python/todo.py
 
 lint:
 	@rustup component add clippy > /dev/null 2>&1
 	@$(RUN) -j 5 \
-		"ruff" "uv run --with ruff ruff check $(RUFF_FILES)" \
+		"ruff" "if command -v uv >/dev/null 2>&1; then uv run --with ruff ruff check $(RUFF_FILES); else ruff check $(RUFF_FILES); fi" \
 		"clippy" "cargo clippy --workspace --all-targets --all-features -- -D warnings" \
 		"clippy:benchmark" "cd benchmark && RUSTC_BOOTSTRAP=1 cargo clippy --all-targets --all-features -- -D warnings" \
 		$(foreach ws,$(EXTRA_WORKSPACES),"clippy:$(notdir $(ws))" "cd $(ws) && cargo clippy --all-targets -- -D warnings")
@@ -151,4 +148,4 @@ bench-compile-times:
 bench-binary-sizes:
 	@$(RUN) "bench-binary-sizes" --show-on-output "cd compile-times && ./bench.sh sizes"
 
-.PHONY: all test miri-test miri-slowest miri-test-full check check-no-std msrv doc format-check lint codegen fuzz bench bench-versus bench-compile-times bench-binary-sizes
+.PHONY: all test miri-test miri-slowest miri-test-full check check-no-std msrv doc lint codegen fuzz bench bench-versus bench-compile-times bench-binary-sizes

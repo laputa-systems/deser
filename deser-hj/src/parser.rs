@@ -385,7 +385,7 @@ impl Parser {
                 self.container = container;
                 self.expect = $expect;
                 self.partial = partial;
-                self.column = advance_column(self.column, &input[..$consumed]);
+                    self.column = advance_column(self.column, &input[..$consumed]);
                 return Ok(Progress::NeedMore($consumed));
             }};
         }
@@ -585,6 +585,7 @@ impl Parser {
             };
         }
 
+
         // emits a value without quotes: a number, `true`, `false` or `null`
         // if only whitespace, a comma, the end of a container or a comment
         // follows it on the line, otherwise the rest of the line is a
@@ -736,14 +737,14 @@ impl Parser {
                     b',' => {
                         cur.bump();
                         // the container can end after the comma
-                        let more = if container == Container::Map {
-                            open_map!()
-                        } else {
-                            open_seq!()
-                        };
-                        if more {
-                            continue 'value;
-                        }
+                            let more = if container == Container::Map {
+                                open_map!()
+                            } else {
+                                open_seq!()
+                            };
+                            if more {
+                                continue 'value;
+                            }
                     }
                     byte if byte == close => {
                         let start = cur.pos;
@@ -780,6 +781,9 @@ impl Parser {
     }
 }
 
+
+
+
 /// Returns the error of an event or `None` if it requests the next value as
 /// raw value.  This is out of line so that the error handling after every
 /// event stays small.
@@ -793,10 +797,16 @@ fn sink_error(err: Error) -> Option<Error> {
     }
 }
 
+
 #[inline(always)]
 fn is_raw_request(_err: &Error) -> bool {
     false
 }
+
+
+
+
+
 
 /// Takes the scratch space that was kept with the state.
 #[inline(never)]
@@ -814,6 +824,7 @@ fn put_scratch(scratch: &mut Vec<u8>, state: &mut State) {
 fn eof_error() -> Error {
     Error::new(ErrorKind::EndOfFile, "unexpected end of file")
 }
+
 
 /// Reads tokens from the input.
 ///
@@ -972,11 +983,11 @@ impl<'a> Cursor<'a> {
 
         let mut escapes = EscapeScanner::new();
         loop {
-            self.pos = if single {
-                skip_to_escape_single(self.input, self.pos)
-            } else {
-                escapes.next(self.input, self.pos)
-            };
+                self.pos = if single {
+                    skip_to_escape_single(self.input, self.pos)
+                } else {
+                    escapes.next(self.input, self.pos)
+                };
             if self.pos == self.input.len() {
                 self.hit_end = true;
                 self.partial = (self.pos, copied);
@@ -1031,6 +1042,11 @@ impl<'a> Cursor<'a> {
             }
         }
     }
+
+
+
+
+
 
     #[inline]
     fn next(&mut self) -> Option<u8> {
@@ -1097,6 +1113,7 @@ impl<'a> Cursor<'a> {
         Some((combine_digits(digits << (64 - 8 * count)), count))
     }
 
+
     #[inline]
     fn bump(&mut self) {
         self.pos += 1;
@@ -1160,6 +1177,7 @@ impl<'a> Cursor<'a> {
 
         Ok(())
     }
+
 
     /// Parses a map key without quotes.
     ///
@@ -1468,6 +1486,7 @@ impl<'a> Cursor<'a> {
         Comment::End(end)
     }
 
+
     fn parse_integer(&mut self, nonnegative: bool, first_digit: u8) -> Result<Number<'a>, Error> {
         match first_digit {
             b'0' => match self.peek_or_nul() {
@@ -1638,7 +1657,7 @@ impl<'a> Cursor<'a> {
         {
             significand = significand * POW10_U64[count] + digits;
             exponent -= count as i32;
-            at_least_one_digit |= count > 0;
+                at_least_one_digit |= count > 0;
             if count < 8 {
                 break;
             }
@@ -1646,7 +1665,7 @@ impl<'a> Cursor<'a> {
         while let c @ b'0'..=b'9' = self.peek_or_nul() {
             self.bump();
             let digit = u64::from(c - b'0');
-            at_least_one_digit = true;
+                at_least_one_digit = true;
 
             if overflow!(significand * 10 + digit, u64::MAX) {
                 // The next multiply/add would overflow, so just ignore all
@@ -1686,6 +1705,7 @@ impl<'a> Cursor<'a> {
             }
         }
     }
+
 
     fn parse_exponent(
         &mut self,
@@ -2010,6 +2030,7 @@ fn emit_literal<'i, O: Out<'i>>(
     out.emit(Atom::Ext(ExtValue::borrowed_value::<ExactNumber>(&number)))
 }
 
+
 /// Emits an integer that does not fit into 64 bits as extension value.
 #[cold]
 fn emit_big_int<'i, O: Out<'i>>(out: &mut O, text: &str) -> Result<(), Error> {
@@ -2101,6 +2122,9 @@ fn line_comment_len(bytes: &[u8]) -> Option<usize> {
     }
     None
 }
+
+
+
 
 #[cold]
 fn invalid_escape() -> Error {
@@ -2503,6 +2527,7 @@ mod tests {
         ]);
     }
 
+
     #[test]
     fn test_hjson() {
         assert_like_json(&[
@@ -2560,4 +2585,10 @@ mod tests {
             (r#"x: "\x""#, "invalid escape in string"),
         ]);
     }
+
+
+
+
+
+
 }

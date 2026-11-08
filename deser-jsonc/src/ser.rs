@@ -560,6 +560,7 @@ fn accept_raw(driver: &mut SerializeDriver<'_>) {
     driver.state_mut().declare_raw_format(&crate::raw::ID);
 }
 
+
 /// Writes the events of a value.
 pub(crate) enum ValueWriter {
     /// Compact output (no indentation, no spaces).
@@ -969,6 +970,7 @@ pub fn to_writer<W: std::io::Write, T: Serialize + ?Sized>(
 ) -> Result<(), Error> {
     SerializerConfig::new().to_writer(writer, value)
 }
+
 
 /// The output of the serializer.
 pub(crate) struct Output {
@@ -1460,7 +1462,6 @@ const U: u8 = b'u'; // \x00...\x1F except the ones above
 
 // Lookup table of escape sequences. A value of b'x' at index i means that byte
 // i is escaped as "\x" in JSON. A value of 0 means that byte i is not escaped.
-#[rustfmt::skip]
 static ESCAPE: [u8; 256] = [
     //  1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
     U,  U,  U,  U,  U,  U,  U,  U, BB, TT, NN,  U, FF, RR,  U,  U, // 0
@@ -1488,6 +1489,8 @@ static ESCAPE: [u8; 256] = [
 pub fn to_string<T: Serialize + ?Sized>(value: &T) -> Result<String, Error> {
     SerializerConfig::new().to_string(value)
 }
+
+
 
 /// Returns the text of an implicit value if it's a JSON literal for the
 /// same value.

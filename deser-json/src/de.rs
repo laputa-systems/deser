@@ -382,6 +382,7 @@ impl<'a> Deserializer<'a> {
         de
     }
 
+
     /// Returns the configuration.
     pub fn config(&self) -> &DeserializerConfig {
         &self.config

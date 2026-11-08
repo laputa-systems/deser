@@ -51,7 +51,7 @@ changes.
   see below).  Unit tests of the parser for a capability go into the
   template with the same `#[cfg]`.
 
-`make format-check` (and CI) fails if the generated files are out of date.
+CI fails if the generated files are out of date.
 
 ## Tests
 
