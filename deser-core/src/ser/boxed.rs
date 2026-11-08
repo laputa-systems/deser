@@ -95,8 +95,8 @@ impl<T: ?Sized> From<Box<T>> for Boxed<T> {
     /// Moves a value on the heap into the box.
     fn from(value: Box<T>) -> Boxed<T> {
         Boxed {
-            // SAFETY: the pointer of a box is not null
-            ptr: unsafe { NonNull::new_unchecked(Box::into_raw(value)) },
+            // SAFETY: Box::leak produces a non-null reference
+            ptr: NonNull::from(Box::leak(value)),
             alloc: Alloc::Heap,
             _marker: PhantomData,
         }

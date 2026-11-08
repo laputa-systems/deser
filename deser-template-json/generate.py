@@ -473,13 +473,11 @@ def generate(source, caps, crate):
 
 
 def rustfmt(source):
-    rv = subprocess.run(
-        ["rustfmt", "--edition", "2024", "--emit", "stdout"],
-        input=source,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    cmd = ["rustfmt", "--edition", "2024", "--emit", "stdout"]
+    rv = subprocess.run(cmd, input=source, capture_output=True, text=True, check=False)
+    if rv.returncode != 0:
+        fallback = ["rustup", "run", "stable", "rustfmt", "--edition", "2024", "--emit", "stdout"]
+        rv = subprocess.run(fallback, input=source, capture_output=True, text=True, check=False)
     if rv.returncode != 0:
         raise TemplateError(f"rustfmt failed:\n{rv.stderr}")
     return rv.stdout
