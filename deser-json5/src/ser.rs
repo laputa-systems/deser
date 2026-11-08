@@ -560,6 +560,7 @@ fn accept_raw(driver: &mut SerializeDriver<'_>) {
     driver.state_mut().declare_raw_format(&crate::raw::ID);
 }
 
+
 /// Writes the events of a value.
 pub(crate) enum ValueWriter {
     /// Compact output (no indentation, no spaces).
@@ -950,6 +951,7 @@ impl SerializerConfig {
         self.writer(writer).write(value)
     }
 }
+
 
 /// Serializes a value as JSON5 to a writer.
 ///
@@ -1461,7 +1463,6 @@ const U: u8 = b'u'; // \x00...\x1F except the ones above
 
 // Lookup table of escape sequences. A value of b'x' at index i means that byte
 // i is escaped as "\x" in JSON. A value of 0 means that byte i is not escaped.
-#[rustfmt::skip]
 static ESCAPE: [u8; 256] = [
     //  1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
     U,  U,  U,  U,  U,  U,  U,  U, BB, TT, NN,  U, FF, RR,  U,  U, // 0
@@ -1481,6 +1482,7 @@ static ESCAPE: [u8; 256] = [
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, // E
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, // F
 ];
+
 
 /// The configuration of [`to_string`] and [`to_writer`].
 const JSON5_CONFIG: SerializerConfig = SerializerConfig::builder().non_finite_floats(true).build();

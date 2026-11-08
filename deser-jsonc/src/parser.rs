@@ -201,6 +201,7 @@ enum Pending {
 }
 
 impl Pending {
+
     #[inline(always)]
     fn is_string(&self) -> bool {
         matches!(self, Pending::String(_))
@@ -277,7 +278,7 @@ impl Parser {
         self.expect = Expect::Value;
         self.partial = Pending::None;
         self.recoverable = None;
-        self.raw_format = None;
+            self.raw_format = None;
     }
 
     /// Returns where the rest of the value continues if the last error was
@@ -289,6 +290,9 @@ impl Parser {
     pub(crate) fn recoverable(&self) -> Option<usize> {
         self.recoverable
     }
+
+
+
 
     /// Parses a value (or continues it) from `input[pos..]`.
     ///
@@ -325,15 +329,15 @@ impl Parser {
         }
         // the raw values that are passed on, and the top-level value might
         // be one of them
-        let state = out.state_mut();
-        // the request of the top-level value, or of a value whose
-        // request came with the last input (the input ended before it)
-        if let Some(format) = state.declare_raw_format(&crate::raw::ID) {
-            if self.is_idle() {
-                self.partial = Pending::Raw;
+            let state = out.state_mut();
+            // the request of the top-level value, or of a value whose
+            // request came with the last input (the input ended before it)
+            if let Some(format) = state.declare_raw_format(&crate::raw::ID) {
+                if self.is_idle() {
+                    self.partial = Pending::Raw;
+                }
+                self.raw_format = Some(format);
             }
-            self.raw_format = Some(format);
-        }
         let rv = match self.run(&mut cur, eof, base, options.exact_numbers, out) {
             Ok(progress) => Ok(progress),
             Err(mut err) if err.offset().is_none() => {
@@ -428,7 +432,7 @@ impl Parser {
                 container = stack.pop().unwrap_or(Container::Top);
                 // a sequence of raw values requests the value after its
                 // last one
-                partial = Pending::None;
+                    partial = Pending::None;
                 sink!(
                     emit!(out, base, $start, cur.pos, $event),
                     Expect::AfterValue
@@ -507,6 +511,8 @@ impl Parser {
             }};
         }
 
+
+
         // emits a string value, the cursor is after the opening quote
         macro_rules! string_value {
             ($start:expr) => {
@@ -568,6 +574,8 @@ impl Parser {
                 )
             }};
         }
+
+
 
         // continue where the parser was suspended
         let mut skip_value = match self.expect {
@@ -690,14 +698,14 @@ impl Parser {
                     b',' => {
                         cur.bump();
                         // the container can end after the comma
-                        let more = if container == Container::Map {
-                            open_map!()
-                        } else {
-                            open_seq!()
-                        };
-                        if more {
-                            continue 'value;
-                        }
+                            let more = if container == Container::Map {
+                                open_map!()
+                            } else {
+                                open_seq!()
+                            };
+                            if more {
+                                continue 'value;
+                            }
                     }
                     byte if byte == close => {
                         let start = cur.pos;
@@ -817,6 +825,8 @@ fn raw_without_format() -> Error {
     )
 }
 
+
+
 pub(crate) fn skip_raw(
     cur: &mut Cursor<'_>,
     _scratch: &mut Vec<u8>,
@@ -856,6 +866,7 @@ impl<'i> Out<'i> for Skip<'_> {
         Ok(())
     }
 }
+
 
 /// Takes the scratch space that was kept with the state.
 #[inline(never)]
@@ -1037,9 +1048,10 @@ impl<'a> Cursor<'a> {
             }
         };
 
+
         let mut escapes = EscapeScanner::new();
         loop {
-            self.pos = escapes.next(self.input, self.pos);
+                self.pos = escapes.next(self.input, self.pos);
             if self.pos == self.input.len() {
                 self.hit_end = true;
                 self.partial = (self.pos, copied);
@@ -1090,6 +1102,11 @@ impl<'a> Cursor<'a> {
             }
         }
     }
+
+
+
+
+
 
     #[inline]
     fn next(&mut self) -> Option<u8> {
@@ -1259,6 +1276,11 @@ impl<'a> Cursor<'a> {
 
         Ok(())
     }
+
+
+
+
+
 
     fn decode_hex_escape(&mut self) -> Result<u16, Error> {
         let mut n = 0;
@@ -1540,7 +1562,7 @@ impl<'a> Cursor<'a> {
         {
             significand = significand * POW10_U64[count] + digits;
             exponent -= count as i32;
-            at_least_one_digit |= count > 0;
+                at_least_one_digit |= count > 0;
             if count < 8 {
                 break;
             }
@@ -1548,7 +1570,7 @@ impl<'a> Cursor<'a> {
         while let c @ b'0'..=b'9' = self.peek_or_nul() {
             self.bump();
             let digit = u64::from(c - b'0');
-            at_least_one_digit = true;
+                at_least_one_digit = true;
 
             if overflow!(significand * 10 + digit, u64::MAX) {
                 // The next multiply/add would overflow, so just ignore all
@@ -1588,6 +1610,7 @@ impl<'a> Cursor<'a> {
             }
         }
     }
+
 
     fn parse_exponent(
         &mut self,
@@ -1912,6 +1935,7 @@ fn emit_literal<'i, O: Out<'i>>(
     out.emit(Atom::Ext(ExtValue::borrowed_value::<ExactNumber>(&number)))
 }
 
+
 /// Emits an integer that does not fit into 64 bits as extension value.
 #[cold]
 fn emit_big_int<'i, O: Out<'i>>(out: &mut O, text: &str) -> Result<(), Error> {
@@ -1925,6 +1949,12 @@ fn emit_big_int<'i, O: Out<'i>>(out: &mut O, text: &str) -> Result<(), Error> {
     }
 }
 
+
+
+
+
+
+
 /// Returns the length of the rest of a line comment (after the slashes)
 /// including the line break that ends it.
 fn line_comment_len(bytes: &[u8]) -> Option<usize> {
@@ -1937,6 +1967,9 @@ fn line_comment_len(bytes: &[u8]) -> Option<usize> {
     }
     None
 }
+
+
+
 
 #[cold]
 fn invalid_escape() -> Error {
@@ -2341,6 +2374,11 @@ mod tests {
         ]);
     }
 
+
+
+
+
+
     #[test]
     fn test_line_scan() {
         fn lines(input: &str) -> Vec<&str> {
@@ -2363,4 +2401,6 @@ mod tests {
         assert_eq!(lines("1 / 2\n3"), ["1 / 2", "3"]);
         assert_eq!(lines("1 /\"a\n\"\n2"), ["1 /\"a", "\"", "2"]);
     }
+
+
 }

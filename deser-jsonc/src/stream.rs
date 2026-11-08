@@ -16,6 +16,8 @@ use crate::parser::{Copying, Discard, Options, Parser, Progress as ParseProgress
 use crate::scan::LineScan;
 use crate::scan::skip_to_escape;
 
+
+
 /// Returns where the next token starts and if it's there.
 ///
 /// If the input ends within a comment (and more input follows), this is
@@ -141,14 +143,16 @@ fn frame_line(state: &mut StreamState, input: &[u8], eof: bool) -> Frame {
         }
     };
     state.pos = 0;
-    state.line = LineScan::default();
+        state.line = LineScan::default();
     let consumed = (end + 1).min(input.len());
     match skip_whitespace(&input[..end], 0, true) {
-        (start, _) if start < end => Frame::Value {
-            start,
-            end,
-            consumed,
-        },
+        (start, _) if start < end => {
+            Frame::Value {
+                start,
+                end,
+                consumed,
+            }
+        }
         _ if consumed == 0 => Frame::End,
         // blank lines are skipped
         _ => Frame::Incomplete { consumed },
@@ -272,7 +276,7 @@ fn scan_structure(input: &[u8], pos: &mut usize, value: &mut Value) -> Option<us
     let mut index = *pos;
     while index < input.len() {
         if value.in_string {
-            index = skip_to_escape(input, index);
+                index = skip_to_escape(input, index);
             let byte = input.get(index).copied();
             match byte {
                 Some(b'"') => {
@@ -328,6 +332,8 @@ fn scan_structure(input: &[u8], pos: &mut usize, value: &mut Value) -> Option<us
     *pos = index;
     None
 }
+
+
 
 /// Reads a stream of JSON values (see [`deser::stream`](deser_core::stream)).
 ///
@@ -560,7 +566,9 @@ impl de::StreamDeserializer for StreamDeserializer {
             return Ok(None);
         }
         Ok(Some(match self.skip_to_value(input, 0, eof)? {
-            Ok(pos) => Progress::Done { consumed: pos },
+            Ok(pos) => {
+                Progress::Done { consumed: pos }
+            }
             Err(progress) => progress,
         }))
     }

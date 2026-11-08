@@ -309,6 +309,9 @@ fn block64_has_escape(input: &[u8], pos: usize) -> bool {
     }) != 0
 }
 
+
+
+
 pub(crate) const ONE_BYTES: u64 = u64::MAX / 255;
 
 /// Flags the bytes in a word (in little endian order) which need escaping.
@@ -380,7 +383,6 @@ const O: bool = false; // allow unescaped
 
 // Lookup table of bytes that must be escaped. A value of true at index i means
 // that byte i requires an escape sequence in the input.
-#[rustfmt::skip]
 pub(crate) static ESCAPE: [bool; 256] = [
     //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
     CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, // 0

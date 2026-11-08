@@ -11,6 +11,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
-          components: clippy, rustfmt
+          components: clippy
       - name: Run clippy
         run: make lint

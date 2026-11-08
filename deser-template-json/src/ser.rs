@@ -1485,7 +1485,6 @@ const U: u8 = b'u'; // \x00...\x1F except the ones above
 
 // Lookup table of escape sequences. A value of b'x' at index i means that byte
 // i is escaped as "\x" in JSON. A value of 0 means that byte i is not escaped.
-#[rustfmt::skip]
 static ESCAPE: [u8; 256] = [
     //  1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
     U,  U,  U,  U,  U,  U,  U,  U, BB, TT, NN,  U, FF, RR,  U,  U, // 0

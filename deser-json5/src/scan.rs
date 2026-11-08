@@ -464,7 +464,6 @@ const O: bool = false; // allow unescaped
 
 // Lookup table of bytes that must be escaped. A value of true at index i means
 // that byte i requires an escape sequence in the input.
-#[rustfmt::skip]
 pub(crate) static ESCAPE: [bool; 256] = [
     //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
     CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, // 0

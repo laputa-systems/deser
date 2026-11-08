@@ -320,8 +320,6 @@ macro_rules! namespace {
 
 #[doc(hidden)]
 #[macro_export]
-// rustfmt indents the inner macro further on every run
-#[rustfmt::skip]
 macro_rules! __namespace {
     ($name:ident, $uri:literal, $d:tt) => {
         #[allow(unused_macros)]

@@ -309,6 +309,7 @@ fn block64_has_escape(input: &[u8], pos: usize) -> bool {
     }) != 0
 }
 
+
 /// Finds the ends of lines (for JSON Lines) in input with comments.
 ///
 /// Only line breaks outside of comments and strings end a line, so a
@@ -444,7 +445,6 @@ const O: bool = false; // allow unescaped
 
 // Lookup table of bytes that must be escaped. A value of true at index i means
 // that byte i requires an escape sequence in the input.
-#[rustfmt::skip]
 pub(crate) static ESCAPE: [bool; 256] = [
     //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
     CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, CT, // 0

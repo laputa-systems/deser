@@ -14,6 +14,8 @@ use crate::de::{Deserializer, DeserializerConfig};
 use crate::parser::Cursor;
 use crate::parser::{Copying, Discard, Options, Parser, Progress as ParseProgress};
 
+
+
 /// Returns where the next token starts and if it's there.
 ///
 /// If the input ends within a comment (and more input follows), this is
@@ -49,6 +51,8 @@ struct StreamState {
     frame_column: usize,
 }
 
+
+
 fn frame_all(state: &mut StreamState, input: &[u8], eof: bool) -> Result<Frame, Error> {
     if state.done {
         // only whitespace may follow the value
@@ -66,7 +70,8 @@ fn frame_all(state: &mut StreamState, input: &[u8], eof: bool) -> Result<Frame, 
     let (start, _) = skip_whitespace(input, 0, eof);
     Ok(if start < input.len() {
         state.done = true;
-        state.frame_column = crate::parser::advance_column(state.parser.column(), &input[..start]);
+            state.frame_column =
+                crate::parser::advance_column(state.parser.column(), &input[..start]);
         Frame::Value {
             start,
             end: input.len(),
@@ -132,7 +137,7 @@ fn frame_line(state: &mut StreamState, input: &[u8], eof: bool) -> Frame {
         (start, _) if start < end => {
             // every line break ends the line, multiline strings are
             // on a single line
-            state.frame_column = 0;
+                state.frame_column = 0;
             Frame::Value {
                 start,
                 end,
@@ -144,6 +149,7 @@ fn frame_line(state: &mut StreamState, input: &[u8], eof: bool) -> Frame {
         _ => Frame::Incomplete { consumed },
     }
 }
+
 
 /// Returns where the frame of a value which failed to parse ends.
 ///
@@ -158,6 +164,7 @@ fn error_end(err: &Error, input: &[u8], pos: usize) -> usize {
         _ => input.len(),
     }
 }
+
 
 /// The state of the scan of a value.
 ///
