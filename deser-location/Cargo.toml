@@ -1,20 +1,23 @@
 [package]
-name = "deser-location"
+name = "laputa-deser-location"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "Source location (line and column) tracking for deser"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "span", "location", "diagnostics"]
 categories = ["encoding"]
 readme = "README.md"
 license = "Apache-2.0"
 documentation = "https://docs.rs/deser-location"
 
+[lib]
+name = "deser_location"
+
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-json = { path = "../deser-json" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-json = { package = "laputa-deser-json", path = "../deser-json" }

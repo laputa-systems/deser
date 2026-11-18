@@ -53,11 +53,11 @@ NO_STD_TARGET := thumbv7em-none-eabihf
 NO_STD_TARGET_64 := aarch64-unknown-none
 # crates that support `no_std` (their `std` feature is off), the no-std
 # example uses the derive
-NO_STD_CRATES := deser deser-core deser-cbor deser-csv deser-json deser-jsonc deser-json5 deser-hj deser-msgpack deser-php deser-pickle deser-plist deser-path deser-debug deser-transcode no-std
+NO_STD_CRATES := laputa-deser laputa-deser-core laputa-deser-cbor laputa-deser-csv laputa-deser-json deser-jsonc deser-json5 deser-hj deser-msgpack deser-php deser-pickle deser-plist laputa-deser-path deser-debug deser-transcode no-std
 # the features of deser-core that work without `std`
 NO_STD_FEATURES := derive,open-enums,arrayvec,bigdecimal,bstr,bytes,chrono,hashbrown,indexmap,jiff,num-bigint,rust_decimal,smallvec,time,uuid
 # the crates with speedups that work without `std`
-NO_STD_SPEEDUPS := deser-cbor deser-json deser-jsonc deser-json5 deser-hj deser-msgpack
+NO_STD_SPEEDUPS := laputa-deser-cbor laputa-deser-json deser-jsonc deser-json5 deser-hj deser-msgpack
 NO_STD_SPEEDUPS_FEATURES := $(subst $(space),$(comma),$(foreach crate,$(NO_STD_SPEEDUPS),$(crate)/speedups))
 
 # standalone workspaces that are not part of the main workspace
@@ -94,15 +94,15 @@ miri-test-full:
 
 check:
 	@$(RUN) "check" "cargo check --workspace --all-targets --all-features"
-	@$(RUN) "check:no-default-features" "cargo check -p deser -p deser-core -p deser-json -p deser-jsonc -p deser-json5 -p deser-hj -p deser-cbor -p deser-msgpack -p deser-yaml -p deser-toml -p deser-ini -p deser-urlencoded -p deser-csv -p deser-php -p deser-pickle -p deser-plist -p deser-xml --all-targets --no-default-features"
+	@$(RUN) "check:no-default-features" "cargo check -p laputa-deser -p laputa-deser-core -p laputa-deser-json -p deser-jsonc -p deser-json5 -p deser-hj -p laputa-deser-cbor -p deser-msgpack -p laputa-deser-yaml -p laputa-deser-toml -p laputa-deser-ini -p deser-urlencoded -p laputa-deser-csv -p deser-php -p deser-pickle -p deser-plist -p deser-xml --all-targets --no-default-features"
 
 # builds without the standard library for a target that does not have one
 check-no-std:
 	@$(RUN) "check-no-std:setup" "rustup target add $(NO_STD_TARGET) $(NO_STD_TARGET_64)"
 	@$(RUN) \
 		"check-no-std" "cargo build --target $(NO_STD_TARGET) --no-default-features --lib $(foreach crate,$(NO_STD_CRATES),-p $(crate))" \
-		"check-no-std:features" "cargo build --target $(NO_STD_TARGET) --no-default-features --lib -p deser-core $(foreach crate,$(NO_STD_SPEEDUPS),-p $(crate)) --features deser-core/$(subst $(comma),$(comma)deser-core/,$(NO_STD_FEATURES)),$(NO_STD_SPEEDUPS_FEATURES)" \
-		"check-no-std:64" "cargo build --target $(NO_STD_TARGET_64) --no-default-features --lib -p deser-core $(foreach crate,$(NO_STD_SPEEDUPS),-p $(crate)) --features deser-core/derive,$(NO_STD_SPEEDUPS_FEATURES)"
+		"check-no-std:features" "cargo build --target $(NO_STD_TARGET) --no-default-features --lib -p laputa-deser-core $(foreach crate,$(NO_STD_SPEEDUPS),-p $(crate)) --features laputa-deser-core/$(subst $(comma),$(comma)laputa-deser-core/,$(NO_STD_FEATURES)),$(NO_STD_SPEEDUPS_FEATURES)" \
+		"check-no-std:64" "cargo build --target $(NO_STD_TARGET_64) --no-default-features --lib -p laputa-deser-core $(foreach crate,$(NO_STD_SPEEDUPS),-p $(crate)) --features laputa-deser-core/derive,$(NO_STD_SPEEDUPS_FEATURES)"
 
 # uses its own target directory so it does not invalidate the regular builds
 msrv:
@@ -149,3 +149,11 @@ bench-binary-sizes:
 	@$(RUN) "bench-binary-sizes" --show-on-output "cd compile-times && ./bench.sh sizes"
 
 .PHONY: all test miri-test miri-slowest miri-test-full check check-no-std msrv doc lint codegen fuzz bench bench-versus bench-compile-times bench-binary-sizes
+
+LAPUTA_CRATES := -p laputa-deser-derive -p laputa-deser-core -p laputa-deser -p laputa-deser-encoding -p laputa-deser-location -p laputa-deser-path -p laputa-deser-value -p laputa-deser-json -p laputa-deser-yaml -p laputa-deser-toml -p laputa-deser-ini -p laputa-deser-csv -p laputa-deser-cbor
+
+publish: ## Publish the laputa-deser packages XSH uses to the stuff crates registry
+	stuff publish cargo $(LAPUTA_CRATES)
+
+publish-dry-run: ## Check the laputa-deser publish without uploading or promoting
+	stuff publish cargo $(LAPUTA_CRATES) --dry-run

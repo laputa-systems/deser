@@ -6,8 +6,8 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive"] }
-deser-toml = { path = "../../deser-toml" }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive"] }
+deser-toml = { package = "laputa-deser-toml", path = "../../deser-toml" }
 
 [[bin]]
 name = "renames"

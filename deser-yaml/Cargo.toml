@@ -1,11 +1,11 @@
 [package]
-name = "deser-yaml"
+name = "laputa-deser-yaml"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "YAML support for deser"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "yaml", "config"]
 categories = ["encoding", "parser-implementations", "config"]
 readme = "README.md"
@@ -15,6 +15,9 @@ documentation = "https://docs.rs/deser-yaml"
 exclude = ["tests/data"]
 autotests = false
 
+[lib]
+name = "deser_yaml"
+
 [features]
 default = ["io", "speedups"]
 # reading and writing values from and to streams (with `deser::io`)
@@ -23,15 +26,15 @@ io = ["deser-core/io"]
 speedups = ["dep:simdutf8"]
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 simdutf8 = { version = "0.1.5", optional = true }
 itoa = "1.0.18"
 zmij = "1.0.23"
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-encoding = { path = "../deser-encoding" }
-deser-location = { version = "0.10.2", path = "../deser-location" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-encoding = { package = "laputa-deser-encoding", path = "../deser-encoding" }
+deser-location = { package = "laputa-deser-location", version = "0.10.2", path = "../deser-location" }
 
 [[test]]
 name = "yaml_test_suite"

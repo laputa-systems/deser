@@ -1,11 +1,11 @@
 [package]
-name = "deser-value"
+name = "laputa-deser-value"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "A dynamic value type for deser"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "value", "dynamic"]
 categories = ["encoding", "data-structures"]
 readme = "README.md"
@@ -13,18 +13,21 @@ license = "Apache-2.0"
 documentation = "https://docs.rs/deser-value"
 autotests = false
 
+[lib]
+name = "deser_value"
+
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 indexmap = { version = "2.9", default-features = false, features = ["std"] }
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-cbor = { version = "0.10.2", path = "../deser-cbor" }
-deser-json = { version = "0.10.2", path = "../deser-json" }
-deser-location = { version = "0.10.2", path = "../deser-location" }
-deser-path = { version = "0.10.2", path = "../deser-path" }
-deser-toml = { version = "0.10.2", path = "../deser-toml" }
-deser-yaml = { version = "0.10.2", path = "../deser-yaml" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-cbor = { package = "laputa-deser-cbor", version = "0.10.2", path = "../deser-cbor" }
+deser-json = { package = "laputa-deser-json", version = "0.10.2", path = "../deser-json" }
+deser-location = { package = "laputa-deser-location", version = "0.10.2", path = "../deser-location" }
+deser-path = { package = "laputa-deser-path", version = "0.10.2", path = "../deser-path" }
+deser-toml = { package = "laputa-deser-toml", version = "0.10.2", path = "../deser-toml" }
+deser-yaml = { package = "laputa-deser-yaml", version = "0.10.2", path = "../deser-yaml" }
 
 [[test]]
 name = "integration"

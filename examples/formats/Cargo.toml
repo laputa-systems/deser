@@ -6,12 +6,12 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive", "jiff", "uuid"] }
-deser-cbor = { path = "../../deser-cbor" }
-deser-json = { path = "../../deser-json" }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive", "jiff", "uuid"] }
+deser-cbor = { package = "laputa-deser-cbor", path = "../../deser-cbor" }
+deser-json = { package = "laputa-deser-json", path = "../../deser-json" }
 deser-msgpack = { path = "../../deser-msgpack" }
-deser-toml = { path = "../../deser-toml" }
-deser-yaml = { path = "../../deser-yaml" }
+deser-toml = { package = "laputa-deser-toml", path = "../../deser-toml" }
+deser-yaml = { package = "laputa-deser-yaml", path = "../../deser-yaml" }
 jiff = "0.2.14"
 uuid = "1"
 

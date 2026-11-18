@@ -6,12 +6,12 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive"] }
-deser-json = { path = "../../deser-json" }
-deser-path = { path = "../../deser-path" }
-deser-toml = { path = "../../deser-toml" }
-deser-value = { path = "../../deser-value" }
-deser-yaml = { path = "../../deser-yaml" }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive"] }
+deser-json = { package = "laputa-deser-json", path = "../../deser-json" }
+deser-path = { package = "laputa-deser-path", path = "../../deser-path" }
+deser-toml = { package = "laputa-deser-toml", path = "../../deser-toml" }
+deser-value = { package = "laputa-deser-value", path = "../../deser-value" }
+deser-yaml = { package = "laputa-deser-yaml", path = "../../deser-yaml" }
 
 [[bin]]
 name = "dynamic-values"

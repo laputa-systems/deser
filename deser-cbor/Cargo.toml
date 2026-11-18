@@ -1,17 +1,20 @@
 [package]
-name = "deser-cbor"
+name = "laputa-deser-cbor"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "CBOR support for deser"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "cbor", "binary"]
 categories = ["encoding", "parser-implementations", "no-std"]
 readme = "README.md"
 license = "Apache-2.0"
 documentation = "https://docs.rs/deser-cbor"
 autotests = false
+
+[lib]
+name = "deser_cbor"
 
 [features]
 default = ["std", "io", "speedups"]
@@ -23,13 +26,13 @@ io = ["std", "deser-core/io"]
 speedups = ["dep:simdutf8"]
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 simdutf8 = { version = "0.1.5", optional = true, default-features = false }
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-encoding = { path = "../deser-encoding" }
-deser-json = { path = "../deser-json" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-encoding = { package = "laputa-deser-encoding", path = "../deser-encoding" }
+deser-json = { package = "laputa-deser-json", path = "../deser-json" }
 
 [[test]]
 name = "integration"

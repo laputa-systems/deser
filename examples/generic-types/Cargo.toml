@@ -6,9 +6,9 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive"] }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive"] }
 deser-debug = { path = "../../deser-debug" }
-deser-json = { path = "../../deser-json" }
+deser-json = { package = "laputa-deser-json", path = "../../deser-json" }
 
 [[bin]]
 name = "generic-types"

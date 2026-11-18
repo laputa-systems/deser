@@ -6,8 +6,8 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive"] }
-deser-json = { path = "../../deser-json" }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive"] }
+deser-json = { package = "laputa-deser-json", path = "../../deser-json" }
 deser-tokio = { path = "../../deser-tokio", features = ["codec"] }
 futures-util = { version = "0.3.30", default-features = false, features = ["sink"] }
 tokio = { version = "1.38", features = ["macros", "net", "rt-multi-thread"] }

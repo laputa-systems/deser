@@ -14,13 +14,13 @@ documentation = "https://docs.rs/deser-validate"
 autotests = false
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
-deser-location = { version = "0.10.2", path = "../deser-location" }
-deser-path = { version = "0.10.2", path = "../deser-path" }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
+deser-location = { package = "laputa-deser-location", version = "0.10.2", path = "../deser-location" }
+deser-path = { package = "laputa-deser-path", version = "0.10.2", path = "../deser-path" }
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-json = { path = "../deser-json" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-json = { package = "laputa-deser-json", path = "../deser-json" }
 
 [[test]]
 name = "integration"

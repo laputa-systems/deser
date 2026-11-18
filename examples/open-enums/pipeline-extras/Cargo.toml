@@ -6,7 +6,7 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../../deser", features = ["open-enums"] }
+deser = { package = "laputa-deser", path = "../../../deser", features = ["open-enums"] }
 pipeline = { path = "../pipeline" }
 
 [lib]

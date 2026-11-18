@@ -6,10 +6,10 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive"] }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive"] }
 deser-env = { path = "../../deser-env" }
-deser-path = { path = "../../deser-path" }
-deser-toml = { path = "../../deser-toml" }
+deser-path = { package = "laputa-deser-path", path = "../../deser-path" }
+deser-toml = { package = "laputa-deser-toml", path = "../../deser-toml" }
 deser-urlencoded = { path = "../../deser-urlencoded" }
 deser-validate = { path = "../../deser-validate" }
 

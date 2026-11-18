@@ -1,11 +1,11 @@
 [package]
-name = "deser-toml"
+name = "laputa-deser-toml"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "TOML support for deser"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "toml", "config"]
 categories = ["encoding", "parser-implementations", "config"]
 readme = "README.md"
@@ -15,6 +15,9 @@ documentation = "https://docs.rs/deser-toml"
 exclude = ["tests/data"]
 autotests = false
 
+[lib]
+name = "deser_toml"
+
 [features]
 default = ["io", "speedups"]
 # reading and writing values from and to streams (with `deser::io`)
@@ -23,17 +26,17 @@ io = ["deser-core/io"]
 speedups = ["dep:simdutf8"]
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 simdutf8 = { version = "0.1.5", optional = true }
 itoa = "1.0.18"
 zmij = "1.0.23"
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive", "jiff"] }
-deser-encoding = { path = "../deser-encoding" }
-deser-location = { version = "0.10.2", path = "../deser-location" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive", "jiff"] }
+deser-encoding = { package = "laputa-deser-encoding", path = "../deser-encoding" }
+deser-location = { package = "laputa-deser-location", version = "0.10.2", path = "../deser-location" }
 jiff = "0.2.14"
-deser-json = { version = "0.10.2", path = "../deser-json" }
+deser-json = { package = "laputa-deser-json", version = "0.10.2", path = "../deser-json" }
 
 [[test]]
 name = "toml_test_suite"

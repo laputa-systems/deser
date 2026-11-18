@@ -14,20 +14,20 @@ documentation = "https://docs.rs/deser-transcode"
 autotests = false
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-cbor = { path = "../deser-cbor" }
-deser-csv = { path = "../deser-csv" }
-deser-json = { path = "../deser-json" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-cbor = { package = "laputa-deser-cbor", path = "../deser-cbor" }
+deser-csv = { package = "laputa-deser-csv", path = "../deser-csv" }
+deser-json = { package = "laputa-deser-json", path = "../deser-json" }
 deser-msgpack = { path = "../deser-msgpack" }
-deser-path = { path = "../deser-path" }
-deser-toml = { path = "../deser-toml" }
+deser-path = { package = "laputa-deser-path", path = "../deser-path" }
+deser-toml = { package = "laputa-deser-toml", path = "../deser-toml" }
 deser-urlencoded = { path = "../deser-urlencoded" }
-deser-value = { path = "../deser-value" }
+deser-value = { package = "laputa-deser-value", path = "../deser-value" }
 deser-xml = { path = "../deser-xml" }
-deser-yaml = { path = "../deser-yaml" }
+deser-yaml = { package = "laputa-deser-yaml", path = "../deser-yaml" }
 
 [[test]]
 name = "integration"

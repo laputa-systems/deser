@@ -1,11 +1,11 @@
 [package]
-name = "deser-csv"
+name = "laputa-deser-csv"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "CSV, TSV and other delimited text for deser"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "csv", "tsv"]
 categories = ["encoding", "parser-implementations", "no-std"]
 readme = "README.md"
@@ -14,6 +14,9 @@ documentation = "https://docs.rs/deser-csv"
 # the vendored conformance test data is only needed for development
 exclude = ["tests/data"]
 autotests = false
+
+[lib]
+name = "deser_csv"
 
 [features]
 default = ["std", "io", "speedups"]
@@ -25,16 +28,16 @@ io = ["std", "deser-core/io"]
 speedups = []
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 itoa = "1.0.18"
 zmij = "1.0.23"
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-json = { version = "0.10.2", path = "../deser-json" }
-deser-location = { version = "0.10.2", path = "../deser-location" }
-deser-path = { version = "0.10.2", path = "../deser-path" }
-deser-value = { version = "0.10.2", path = "../deser-value" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-json = { package = "laputa-deser-json", version = "0.10.2", path = "../deser-json" }
+deser-location = { package = "laputa-deser-location", version = "0.10.2", path = "../deser-location" }
+deser-path = { package = "laputa-deser-path", version = "0.10.2", path = "../deser-path" }
+deser-value = { package = "laputa-deser-value", version = "0.10.2", path = "../deser-value" }
 
 [[test]]
 name = "papaparse_test_suite"

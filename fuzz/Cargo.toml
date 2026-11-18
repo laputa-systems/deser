@@ -10,28 +10,28 @@ cargo-fuzz = true
 [dependencies]
 arbitrary = "1"
 libfuzzer-sys = "0.4"
-deser = { path = "../deser", features = ["derive"] }
-deser-cbor = { path = "../deser-cbor" }
-deser-csv = { path = "../deser-csv" }
+deser = { package = "laputa-deser", path = "../deser", features = ["derive"] }
+deser-cbor = { package = "laputa-deser-cbor", path = "../deser-cbor" }
+deser-csv = { package = "laputa-deser-csv", path = "../deser-csv" }
 deser-debug = { path = "../deser-debug" }
-deser-encoding = { path = "../deser-encoding" }
+deser-encoding = { package = "laputa-deser-encoding", path = "../deser-encoding" }
 deser-env = { path = "../deser-env" }
 deser-hj = { path = "../deser-hj" }
-deser-ini = { path = "../deser-ini" }
-deser-json = { path = "../deser-json" }
+deser-ini = { package = "laputa-deser-ini", path = "../deser-ini" }
+deser-json = { package = "laputa-deser-json", path = "../deser-json" }
 deser-json5 = { path = "../deser-json5" }
 deser-jsonc = { path = "../deser-jsonc" }
 deser-msgpack = { path = "../deser-msgpack" }
-deser-path = { path = "../deser-path" }
+deser-path = { package = "laputa-deser-path", path = "../deser-path" }
 deser-php = { path = "../deser-php" }
 deser-pickle = { path = "../deser-pickle" }
 deser-plist = { path = "../deser-plist" }
-deser-toml = { path = "../deser-toml" }
+deser-toml = { package = "laputa-deser-toml", path = "../deser-toml" }
 deser-transcode = { path = "../deser-transcode" }
 deser-urlencoded = { path = "../deser-urlencoded" }
-deser-value = { path = "../deser-value" }
+deser-value = { package = "laputa-deser-value", path = "../deser-value" }
 deser-xml = { path = "../deser-xml" }
-deser-yaml = { path = "../deser-yaml" }
+deser-yaml = { package = "laputa-deser-yaml", path = "../deser-yaml" }
 
 # not part of the main workspace (it needs a nightly compiler to build the
 # fuzz targets with sanitizers)
