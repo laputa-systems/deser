@@ -1340,8 +1340,8 @@ impl<'a> Scanner<'a> {
                 let run_start = self.mark.offset;
                 let (run_end, run_columns) = self.quoted_scalar_run(single);
                 if run_end != run_start {
-                    if let Some(mut string) = owned.as_mut() {
-                        self.push_str(&mut string, &self.input[run_start..run_end])?;
+                    if let Some(string) = owned.as_mut() {
+                        self.push_str(string, &self.input[run_start..run_end])?;
                     }
                     // the run has no blanks or breaks, see `skip`
                     self.mark.offset = run_end;
@@ -1410,15 +1410,15 @@ impl<'a> Scanner<'a> {
                     return self.error("invalid indentation of quoted scalar continuation");
                 }
                 // a line break makes the value owned
-                let mut string = owned.as_mut().unwrap();
+                let string = owned.as_mut().unwrap();
                 if leading_break && trailing_breaks == 0 {
-                    self.push_char(&mut string, ' ')?;
+                    self.push_char(string, ' ')?;
                 } else {
-                    self.push_breaks(&mut string, trailing_breaks)?;
+                    self.push_breaks(string, trailing_breaks)?;
                 }
-            } else if let Some(mut string) = owned.as_mut() {
+            } else if let Some(string) = owned.as_mut() {
                 // blanks on the same line are copied as is
-                self.push_str(&mut string, &self.input[blanks_start..self.mark.offset])?;
+                self.push_str(string, &self.input[blanks_start..self.mark.offset])?;
             }
         }
 
@@ -1596,20 +1596,20 @@ impl<'a> Scanner<'a> {
                 // it's copied as is (the input already contains it).
                 if leading_blanks {
                     self.check_representation_len(end.offset - start.offset)?;
-                    let mut string = folded
+                    let string = folded
                         .get_or_insert_with(|| self.input[start.offset..end.offset].to_string());
                     if trailing_breaks == 0 {
-                        self.push_char(&mut string, ' ')?;
+                        self.push_char(string, ' ')?;
                     } else {
-                        self.push_breaks(&mut string, trailing_breaks)?;
+                        self.push_breaks(string, trailing_breaks)?;
                     }
                     trailing_breaks = 0;
                     leading_blanks = false;
-                } else if let Some(mut string) = folded.as_mut() {
-                    self.push_str(&mut string, &self.input[end.offset..run_start.offset])?;
+                } else if let Some(string) = folded.as_mut() {
+                    self.push_str(string, &self.input[end.offset..run_start.offset])?;
                 }
-                if let Some(mut string) = folded.as_mut() {
-                    self.push_str(&mut string, &self.input[run_start.offset..run_end])?;
+                if let Some(string) = folded.as_mut() {
+                    self.push_str(string, &self.input[run_start.offset..run_end])?;
                 }
                 // the run has no blanks or breaks, see `skip`
                 self.mark.offset = run_end;

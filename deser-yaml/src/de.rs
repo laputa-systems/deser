@@ -32,9 +32,17 @@ impl AliasBudget {
     }
 
     fn charge(&self, count: usize) -> Result<(), Error> {
-        self.used.try_update(std::sync::atomic::Ordering::Relaxed, std::sync::atomic::Ordering::Relaxed,
-            |used| used.checked_add(count).filter(|used| *used <= self.limit))
-            .map(|_| ()).map_err(|_| Error::new(ErrorKind::LimitExceeded, "cumulative alias replay limit exceeded"))
+        let ordering = std::sync::atomic::Ordering::Relaxed;
+        let mut used = self.used.load(ordering);
+        loop {
+            let next = used.checked_add(count).filter(|next| *next <= self.limit).ok_or_else(|| {
+                Error::new(ErrorKind::LimitExceeded, "cumulative alias replay limit exceeded")
+            })?;
+            match self.used.compare_exchange_weak(used, next, ordering, ordering) {
+                Ok(_) => return Ok(()),
+                Err(actual) => used = actual,
+            }
+        }
     }
 }
 
