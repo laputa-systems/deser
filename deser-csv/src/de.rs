@@ -1,3 +1,4 @@
+use alloc::collections::BTreeSet;
 use alloc::format;
 use alloc::string::String;
 use alloc::string::ToString;
@@ -325,6 +326,7 @@ impl DeserializerConfig {
             skip_blank_lines: self.skip_blank_lines,
             lenient_quotes: self.lenient_quotes,
             max_record_len: self.max_record_len,
+            max_fields: self.context.get::<deser_core::de::Limits>().and_then(|limits| limits.max_items()),
         }
     }
 
@@ -551,8 +553,22 @@ impl StreamState {
         let options = config.options(header);
         match self.scanner.scan(dialect, input, eof, options)? {
             Scan::Record { end, consumed } => {
+                if end > config.max_record_len {
+                    return Err(Error::with_offset(
+                        ErrorKind::LimitExceeded,
+                        format!(
+                            "record is longer than the maximum of {} bytes",
+                            config.max_record_len
+                        ),
+                        config.max_record_len,
+                    ));
+                }
                 if header {
-                    self.read_names(input)?;
+                    self.read_names(
+                        input,
+                        config.context.get::<deser_core::de::DuplicateKeys>()
+                            == Some(&deser_core::de::DuplicateKeys::Error),
+                    )?;
                     return Ok(Frame::Incomplete { consumed });
                 }
                 if self.names.is_none() && self.expected_len.is_none() {
@@ -587,11 +603,13 @@ impl StreamState {
             return Ok(Frame::Incomplete { consumed: 0 });
         }
         if input.starts_with(b"\xff\xfe") || input.starts_with(b"\xfe\xff") {
-            return Err(Error::with_offset(
+            let mut error = Error::with_offset(
                 ErrorKind::Syntax,
                 "input is UTF-16, only UTF-8 is supported",
                 0,
-            ));
+            );
+            error.set_source(core::str::from_utf8(input).expect_err("UTF-16 BOM is not UTF-8"));
+            return Err(error);
         }
         let bom = if input.starts_with(BOM) { BOM.len() } else { 0 };
         let rest = &input[bom..];
@@ -639,12 +657,13 @@ impl StreamState {
     }
 
     /// Takes the names of the columns from the record that was scanned.
-    fn read_names(&mut self, record: &[u8]) -> Result<(), Error> {
+    fn read_names(&mut self, record: &[u8], unique: bool) -> Result<(), Error> {
         if let Some((offset, msg)) = self.scanner.error {
             return Err(Error::with_offset(ErrorKind::Syntax, msg, offset));
         }
         let dialect = self.dialect.as_ref().unwrap();
         let mut names = Vec::with_capacity(self.scanner.fields.len());
+        let mut seen = BTreeSet::new();
         for field in &self.scanner.fields {
             let text = &record[field.start..field.end];
             let text = if field.flags & UNESCAPE != 0 {
@@ -654,13 +673,25 @@ impl StreamState {
                 text
             };
             match core::str::from_utf8(text) {
-                Ok(name) => names.push(name.to_string()),
-                Err(_) => {
-                    return Err(Error::with_offset(
+                Ok(name) => {
+                    let name = name.to_string();
+                    if unique && !seen.insert(name.clone()) {
+                        return Err(Error::with_offset(
+                            ErrorKind::DuplicateKey,
+                            format!("duplicate header `{name}`"),
+                            field.span_start,
+                        ));
+                    }
+                    names.push(name);
+                }
+                Err(source) => {
+                    let mut error = Error::with_offset(
                         ErrorKind::Syntax,
                         "name is not valid UTF-8",
                         field.span_start,
-                    ));
+                    );
+                    error.set_source(source);
+                    return Err(error);
                 }
             }
         }

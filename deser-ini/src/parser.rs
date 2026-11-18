@@ -1,6 +1,14 @@
 //! Parses INI files and git's config files into a [`Document`].
 use std::borrow::Cow;
-use std::collections::HashMap;
+use std::collections::BTreeMap;
+
+/// The structured reason for a syntax failure, without changing its kind or display.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SyntaxDetail {
+    DuplicateKey,
+}
+
+impl deser_core::ErrorAttachment for SyntaxDetail {}
 
 use deser_core::{Error, ErrorKind};
 
@@ -38,7 +46,7 @@ pub(crate) struct Node<'a> {
 /// more than once have more than one value.
 pub(crate) struct Document<'a> {
     pub(crate) nodes: Vec<Node<'a>>,
-    lookup: HashMap<(usize, Cow<'a, str>), usize>,
+    lookup: BTreeMap<(usize, Cow<'a, str>), usize>,
 }
 
 impl<'a> Document<'a> {
@@ -51,7 +59,7 @@ impl<'a> Document<'a> {
                 values: Vec::new(),
                 children: Vec::new(),
             }],
-            lookup: HashMap::new(),
+            lookup: BTreeMap::new(),
         }
     }
 
@@ -66,11 +74,13 @@ impl<'a> Document<'a> {
         let id = (parent, name);
         if let Some(&node) = self.lookup.get(&id) {
             if self.nodes[node].kind != kind {
-                return Err(Error::with_offset(
+                let mut error = Error::with_offset(
                     ErrorKind::Syntax,
                     format!("`{}` is a key and a section", id.1),
                     range.0,
-                ));
+                );
+                error.set_attachment(SyntaxDetail::DuplicateKey);
+                return Err(error);
             }
             return Ok(node);
         }
