@@ -41,7 +41,7 @@ jobs:
         if: github.ref_type == 'tag'
         run: |
           version=$(cargo metadata --no-deps --format-version 1 \
-            | jq -r '.packages[] | select(.name == "deser") | .version')
+            | jq -r '.packages[] | select(.name == "laputa-deser") | .version')
           if [ "$version" != "$GITHUB_REF_NAME" ]; then
             echo "::error::tag $GITHUB_REF_NAME does not match the version $version of deser"
             exit 1
