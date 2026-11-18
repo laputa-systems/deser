@@ -150,7 +150,7 @@ bench-binary-sizes:
 
 .PHONY: all test miri-test miri-slowest miri-test-full check check-no-std msrv doc lint codegen fuzz bench bench-versus bench-compile-times bench-binary-sizes
 
-LAPUTA_CRATES := -p laputa-deser-derive -p laputa-deser-core -p laputa-deser -p laputa-deser-encoding -p laputa-deser-location -p laputa-deser-path -p laputa-deser-value -p laputa-deser-json -p laputa-deser-yaml -p laputa-deser-toml -p laputa-deser-ini -p laputa-deser-csv -p laputa-deser-cbor
+LAPUTA_CRATES := -p laputa-deser-derive -p laputa-deser-core -p laputa-deser -p laputa-deser-encoding -p laputa-deser-location -p laputa-deser-path -p laputa-deser-json -p laputa-deser-yaml -p laputa-deser-toml -p laputa-deser-cbor -p laputa-deser-value -p laputa-deser-ini -p laputa-deser-csv
 
 publish: ## Publish the laputa-deser packages XSH uses to the stuff crates registry
 	stuff publish cargo $(LAPUTA_CRATES)
