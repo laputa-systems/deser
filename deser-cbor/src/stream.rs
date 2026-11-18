@@ -132,7 +132,7 @@ impl StreamState {
                 match major {
                     MAJOR_BYTES | MAJOR_TEXT => {
                         let len = usize::try_from(arg).ok();
-                        if max_len.is_some_and(|max_len| len.map_or(true, |len| len > max_len)) {
+                        if max_len.is_some_and(|max_len| len.is_none_or(|len| len > max_len)) {
                             return Scan::LimitExceeded(head_start);
                         }
                         let Some(len) = len else {

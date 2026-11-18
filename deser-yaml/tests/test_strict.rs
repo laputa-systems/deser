@@ -20,7 +20,7 @@ fn strict_yaml_12_accepts_ordinary_and_explicit_12_documents() {
     let config = DeserializerConfig::builder().version(Version::V1_2)
         .required_version(Some(Version::V1_2)).build();
     for input in ["flag: true\n", "%YAML 1.2\n---\nflag: true\n"] {
-        assert_eq!(config.from_str::<BTreeMap<String, bool>>(input).unwrap()["flag"], true);
+        assert!(config.from_str::<BTreeMap<String, bool>>(input).unwrap()["flag"]);
     }
 }
 
@@ -37,7 +37,7 @@ fn strict_merges_accept_disjoint_sources_and_reject_duplicate_sources() {
 #[test]
 fn default_yaml_retains_declared_version_and_merge_precedence() {
     let config = DeserializerConfig::new();
-    assert_eq!(config.from_str::<BTreeMap<String, bool>>("%YAML 1.1\n---\nflag: yes\n").unwrap()["flag"], true);
+    assert!(config.from_str::<BTreeMap<String, bool>>("%YAML 1.1\n---\nflag: yes\n").unwrap()["flag"]);
     let input = "base: &base {x: one}\ntarget: {<<: *base, x: two}\n";
     assert_eq!(config.from_str::<BTreeMap<String, BTreeMap<String, String>>>(input).unwrap()["target"]["x"], "two");
 }
