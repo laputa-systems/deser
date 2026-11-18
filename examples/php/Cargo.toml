@@ -6,7 +6,7 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive"] }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive"] }
 deser-php = { path = "../../deser-php" }
 
 [[bin]]

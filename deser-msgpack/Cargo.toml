@@ -23,13 +23,13 @@ io = ["std", "deser-core/io"]
 speedups = ["dep:simdutf8"]
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 simdutf8 = { version = "0.1.5", optional = true, default-features = false }
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-encoding = { path = "../deser-encoding" }
-deser-json = { path = "../deser-json" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-encoding = { package = "laputa-deser-encoding", path = "../deser-encoding" }
+deser-json = { package = "laputa-deser-json", path = "../deser-json" }
 
 [[test]]
 name = "integration"

@@ -13,6 +13,6 @@ license = "Apache-2.0"
 documentation = "https://docs.rs/deser-debug"
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }

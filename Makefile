@@ -149,3 +149,11 @@ bench-binary-sizes:
 	@$(RUN) "bench-binary-sizes" --show-on-output "cd compile-times && ./bench.sh sizes"
 
 .PHONY: all test miri-test miri-slowest miri-test-full check check-no-std msrv doc lint codegen fuzz bench bench-versus bench-compile-times bench-binary-sizes
+
+LAPUTA_CRATES := -p laputa-deser-derive -p laputa-deser-core -p laputa-deser -p laputa-deser-encoding -p laputa-deser-location -p laputa-deser-path -p laputa-deser-value -p laputa-deser-json -p laputa-deser-yaml -p laputa-deser-toml -p laputa-deser-ini -p laputa-deser-csv -p laputa-deser-cbor
+
+publish: ## Publish the laputa-deser packages XSH uses to the stuff crates registry
+	stuff publish cargo $(LAPUTA_CRATES)
+
+publish-dry-run: ## Check the laputa-deser publish without uploading or promoting
+	stuff publish cargo $(LAPUTA_CRATES) --dry-run

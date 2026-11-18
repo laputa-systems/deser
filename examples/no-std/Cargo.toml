@@ -7,9 +7,9 @@ publish = false
 
 [dependencies]
 # without the default features (`std` and `io`) only `alloc` is needed
-deser = { path = "../../deser", default-features = false, features = ["derive"] }
-deser-cbor = { path = "../../deser-cbor", default-features = false }
-deser-json = { path = "../../deser-json", default-features = false }
+deser = { package = "laputa-deser", path = "../../deser", default-features = false, features = ["derive"] }
+deser-cbor = { package = "laputa-deser-cbor", path = "../../deser-cbor", default-features = false }
+deser-json = { package = "laputa-deser-json", path = "../../deser-json", default-features = false }
 
 [lib]
 path = "src/lib.rs"

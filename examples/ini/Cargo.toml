@@ -6,9 +6,9 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive"] }
-deser-ini = { path = "../../deser-ini" }
-deser-path = { path = "../../deser-path" }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive"] }
+deser-ini = { package = "laputa-deser-ini", path = "../../deser-ini" }
+deser-path = { package = "laputa-deser-path", path = "../../deser-path" }
 
 [[bin]]
 name = "ini"

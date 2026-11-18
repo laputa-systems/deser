@@ -23,12 +23,12 @@ std = ["deser-core/std"]
 io = ["std", "deser-core/io"]
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-json = { path = "../deser-json" }
-deser-value = { path = "../deser-value" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-json = { package = "laputa-deser-json", path = "../deser-json" }
+deser-value = { package = "laputa-deser-value", path = "../deser-value" }
 
 [[test]]
 name = "integration"

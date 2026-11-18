@@ -1,11 +1,11 @@
 [package]
-name = "deser-derive"
+name = "laputa-deser-derive"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "Derive macros for the Serialize and Deserialize traits of deser"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "derive"]
 categories = ["encoding", "development-tools::procedural-macro-helpers"]
 readme = "README.md"
@@ -13,6 +13,7 @@ license = "Apache-2.0"
 documentation = "https://docs.rs/deser"
 
 [lib]
+name = "deser_derive"
 proc-macro = true
 # the derive is tested through deser
 test = false

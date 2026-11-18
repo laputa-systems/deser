@@ -12,15 +12,15 @@ rust-version = "1.88"
 count-allocs = []
 
 [dependencies]
-deser = { path = "../deser", features = ["derive"] }
-deser-cbor = { path = "../deser-cbor", features = ["speedups"] }
-deser-csv = { path = "../deser-csv" }
-deser-encoding = { path = "../deser-encoding" }
-deser-json = { path = "../deser-json", features = ["speedups"] }
+deser = { package = "laputa-deser", path = "../deser", features = ["derive"] }
+deser-cbor = { package = "laputa-deser-cbor", path = "../deser-cbor", features = ["speedups"] }
+deser-csv = { package = "laputa-deser-csv", path = "../deser-csv" }
+deser-encoding = { package = "laputa-deser-encoding", path = "../deser-encoding" }
+deser-json = { package = "laputa-deser-json", path = "../deser-json", features = ["speedups"] }
 deser-msgpack = { path = "../deser-msgpack", features = ["speedups"] }
-deser-toml = { path = "../deser-toml", features = ["speedups"] }
-deser-value = { path = "../deser-value" }
-deser-yaml = { path = "../deser-yaml", features = ["speedups"] }
+deser-toml = { package = "laputa-deser-toml", path = "../deser-toml", features = ["speedups"] }
+deser-value = { package = "laputa-deser-value", path = "../deser-value" }
+deser-yaml = { package = "laputa-deser-yaml", path = "../deser-yaml", features = ["speedups"] }
 # the serde libraries that are compared against
 ciborium = "0.2.2"
 csv = "1.3.1"

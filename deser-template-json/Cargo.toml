@@ -20,7 +20,7 @@ io = ["std", "deser-core/io"]
 speedups = ["dep:simdutf8"]
 
 [dependencies]
-deser-core = { path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", path = "../deser-core", default-features = false }
 # writing floats and integers
 itoa = "1.0.18"
 zmij = "1.0.23"
@@ -30,13 +30,13 @@ unicode-ident = "1.0.12"
 
 [dev-dependencies]
 # the tests compare the dialects with JSON
-deser-json = { path = "../deser-json" }
-deser = { path = "../deser", features = ["derive"] }
-deser-encoding = { path = "../deser-encoding" }
+deser-json = { package = "laputa-deser-json", path = "../deser-json" }
+deser = { package = "laputa-deser", path = "../deser", features = ["derive"] }
+deser-encoding = { package = "laputa-deser-encoding", path = "../deser-encoding" }
 deser-json5 = { path = "../deser-json5" }
 deser-hj = { path = "../deser-hj" }
 deser-jsonc = { path = "../deser-jsonc" }
-deser-location = { path = "../deser-location" }
+deser-location = { package = "laputa-deser-location", path = "../deser-location" }
 
 # the tests of reading JSON, JSONC, JSON5 and Hjson
 [[test]]

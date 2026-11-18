@@ -1,17 +1,20 @@
 [package]
-name = "deser"
+name = "laputa-deser"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "An experimental serialization and deserialization library for Rust"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "serde", "derive", "no_std"]
 categories = ["encoding", "no-std"]
 readme = "README.md"
 license = "Apache-2.0"
 documentation = "https://docs.rs/deser"
 autotests = false
+
+[lib]
+name = "deser"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -48,12 +51,12 @@ smallvec = ["deser-core/smallvec"]
 [dependencies]
 # everything but the derive macros is in deser-core.  The formats depend on
 # it directly so that they compile in parallel with the derive macros.
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
-deser-derive = { version = "0.10.2", path = "../deser-derive", optional = true }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
+deser-derive = { package = "laputa-deser-derive", version = "0.10.2", path = "../deser-derive", optional = true }
 
 [dev-dependencies]
 # the tests use derive
-deser = { path = ".", features = ["derive"] }
+deser = { package = "laputa-deser", path = ".", features = ["derive"] }
 # the tests of the well-known types (with the features of the same name)
 bigdecimal = { version = "0.4", default-features = false, features = ["std"] }
 chrono = { version = "0.4.38", default-features = false }

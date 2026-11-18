@@ -21,13 +21,13 @@ io = ["deser-core/io"]
 speedups = []
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 zmij = "1.0.23"
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-path = { version = "0.10.2", path = "../deser-path" }
-deser-value = { version = "0.10.2", path = "../deser-value" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-path = { package = "laputa-deser-path", version = "0.10.2", path = "../deser-path" }
+deser-value = { package = "laputa-deser-value", version = "0.10.2", path = "../deser-value" }
 
 [[test]]
 name = "integration"

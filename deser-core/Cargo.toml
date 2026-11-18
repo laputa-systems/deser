@@ -1,16 +1,19 @@
 [package]
-name = "deser-core"
+name = "laputa-deser-core"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "Core traits and types of deser, use the deser crate instead"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization"]
 categories = ["encoding", "no-std"]
 readme = "README.md"
 license = "Apache-2.0"
 documentation = "https://docs.rs/deser"
+
+[lib]
+name = "deser_core"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -57,8 +60,8 @@ smallvec = { version = "1.6", optional = true, default-features = false, feature
 
 [dev-dependencies]
 # the examples in the documentation use deser (with derive)
-deser = { path = "../deser", features = ["derive", "open-enums"] }
+deser = { package = "laputa-deser", path = "../deser", features = ["derive", "open-enums"] }
 # the examples of user facing features deserialize JSON (without std so that
 # the no-default-features builds of the tests stay without std)
-deser-json = { path = "../deser-json", default-features = false }
+deser-json = { package = "laputa-deser-json", path = "../deser-json", default-features = false }
 time = { version = "0.3.40", default-features = false, features = ["macros"] }

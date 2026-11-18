@@ -6,8 +6,8 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-deser = { path = "../../deser", features = ["derive"] }
-deser-value = { path = "../../deser-value" }
+deser = { package = "laputa-deser", path = "../../deser", features = ["derive"] }
+deser-value = { package = "laputa-deser-value", path = "../../deser-value" }
 deser-xml = { path = "../../deser-xml" }
 
 [[bin]]

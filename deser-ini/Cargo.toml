@@ -1,11 +1,11 @@
 [package]
-name = "deser-ini"
+name = "laputa-deser-ini"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
 version = "0.10.2"
 edition.workspace = true
 rust-version.workspace = true
 description = "INI files (and git's config files) for deser"
-repository = "https://github.com/mitsuhiko/deser"
+repository = "https://github.com/laputa-systems/deser"
 keywords = ["serialization", "deserialization", "ini", "config", "configparser"]
 categories = ["encoding", "parser-implementations", "config"]
 readme = "README.md"
@@ -15,6 +15,9 @@ documentation = "https://docs.rs/deser-ini"
 exclude = ["tests/data"]
 autotests = false
 
+[lib]
+name = "deser_ini"
+
 [features]
 default = ["io", "speedups"]
 # reading and writing values from and to streams (with `deser::io`)
@@ -23,14 +26,14 @@ io = ["deser-core/io"]
 speedups = []
 
 [dependencies]
-deser-core = { version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
 zmij = "1.0.23"
 
 [dev-dependencies]
-deser = { version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-json = { version = "0.10.2", path = "../deser-json" }
-deser-path = { version = "0.10.2", path = "../deser-path" }
-deser-value = { version = "0.10.2", path = "../deser-value" }
+deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
+deser-json = { package = "laputa-deser-json", version = "0.10.2", path = "../deser-json" }
+deser-path = { package = "laputa-deser-path", version = "0.10.2", path = "../deser-path" }
+deser-value = { package = "laputa-deser-value", version = "0.10.2", path = "../deser-value" }
 
 [[test]]
 name = "corpus"
