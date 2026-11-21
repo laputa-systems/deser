@@ -1,7 +1,7 @@
 [package]
 name = "laputa-deser-value"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
-version = "0.10.2"
+version = "0.10.3"
 edition.workspace = true
 rust-version.workspace = true
 description = "A dynamic value type for deser"
@@ -17,17 +17,17 @@ autotests = false
 name = "deser_value"
 
 [dependencies]
-deser-core = { package = "laputa-deser-core", version = "0.10.2", path = "../deser-core", default-features = false }
+deser-core = { package = "laputa-deser-core", version = "0.10.3", path = "../deser-core", default-features = false }
 indexmap = { version = "2.9", default-features = false, features = ["std"] }
 
 [dev-dependencies]
-deser = { package = "laputa-deser", version = "0.10.2", path = "../deser", features = ["derive"] }
-deser-cbor = { package = "laputa-deser-cbor", version = "0.10.2", path = "../deser-cbor" }
-deser-json = { package = "laputa-deser-json", version = "0.10.2", path = "../deser-json" }
-deser-location = { package = "laputa-deser-location", version = "0.10.2", path = "../deser-location" }
-deser-path = { package = "laputa-deser-path", version = "0.10.2", path = "../deser-path" }
-deser-toml = { package = "laputa-deser-toml", version = "0.10.2", path = "../deser-toml" }
-deser-yaml = { package = "laputa-deser-yaml", version = "0.10.2", path = "../deser-yaml" }
+deser = { package = "laputa-deser", version = "0.10.3", path = "../deser", features = ["derive"] }
+deser-cbor = { package = "laputa-deser-cbor", version = "0.10.3", path = "../deser-cbor" }
+deser-json = { package = "laputa-deser-json", version = "0.10.3", path = "../deser-json" }
+deser-location = { package = "laputa-deser-location", version = "0.10.3", path = "../deser-location" }
+deser-path = { package = "laputa-deser-path", version = "0.10.3", path = "../deser-path" }
+deser-toml = { package = "laputa-deser-toml", version = "0.10.3", path = "../deser-toml" }
+deser-yaml = { package = "laputa-deser-yaml", version = "0.10.3", path = "../deser-yaml" }
 
 [[test]]
 name = "integration"

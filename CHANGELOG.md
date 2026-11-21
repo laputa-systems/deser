@@ -2,6 +2,15 @@
 
 All notable changes to deser are documented here.
 
+## 0.10.3
+
+- The `std` feature no longer turns on the `std` feature of the optional
+  crates (`jiff`, `bigdecimal`, `num-bigint`, `rust_decimal` and
+  `indexmap`).  The weak dependency features made Cargo lock those
+  crates even when nothing enabled them.  The new `jiff-std` feature
+  keeps a `jiff` error as the source of a conversion error, which
+  previously followed from `std` and `jiff`.
+
 ## 0.10.2
 
 - Added adapters for values that come in more than one form:

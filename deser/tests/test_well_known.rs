@@ -336,6 +336,23 @@ fn test_std() {
     assert_eq!(time, UNIX_EPOCH - StdDuration::new(1, 500_000_000));
 }
 
+#[cfg(feature = "jiff-std")]
+#[test]
+fn test_jiff_error_source() {
+    let date = Datetime {
+        date: Some(Date {
+            year: 2023,
+            month: 2,
+            day: 30,
+        }),
+        time: None,
+        offset: None,
+    };
+    let err = deserialize::<jiff::civil::Date, _>(Atom::Ext(ExtValue::owned(date))).unwrap_err();
+    let source = std::error::Error::source(&err).expect("jiff error kept as source");
+    assert!(source.downcast_ref::<jiff::Error>().is_some());
+}
+
 #[cfg(feature = "jiff")]
 #[test]
 fn test_jiff() {

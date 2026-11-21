@@ -131,6 +131,9 @@ pub struct Account {
 //!   implement [`Serialize`] and [`Deserialize`] for the types of these crates.  They
 //!   are serialized as [well-known types](crate::ext#well-known-types) which data
 //!   formats can support natively.
+//!   `jiff-std` also keeps the `jiff` error as the [source](std::error::Error::source)
+//!   of a conversion error.  These features do not turn on the `std` feature of the
+//!   other crate; depend on it with `std` where its own API needs it.
 //! * `indexmap`, `hashbrown`, `smallvec`, `arrayvec`, `bytes` and `bstr` implement
 //!   [`Serialize`] and [`Deserialize`] for the collections and byte buffers of these
 //!   crates.  They behave like their counterparts in the standard library, including

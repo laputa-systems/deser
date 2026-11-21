@@ -1,7 +1,7 @@
 [package]
 name = "laputa-deser-core"
 authors = ["Armin Ronacher <armin.ronacher@active-4.com>"]
-version = "0.10.2"
+version = "0.10.3"
 edition.workspace = true
 rust-version.workspace = true
 description = "Core traits and types of deser, use the deser crate instead"
@@ -25,13 +25,11 @@ default = ["std", "io"]
 # the standard library.  Without it deser needs `alloc`, the types of the
 # standard library that are not in `alloc` (like `HashMap` and `Path`) are
 # not supported and there is no cache for the sinks.
-std = [
-  "bigdecimal?/std",
-  "jiff?/std",
-  "num-bigint?/std",
-  "rust_decimal?/std",
-  "indexmap?/std",
-]
+std = []
+# the error sources of `jiff` (its errors only implement `Error` with std).
+# It enables `jiff/std` directly: a weak `jiff?/std` in `std` makes Cargo
+# lock every optional bridge crate (rust-lang/cargo#10801).
+jiff-std = ["std", "jiff", "jiff/std"]
 # the support code of derived implementations (the derive macros are in
 # deser-derive and re-exported by deser)
 derive = []

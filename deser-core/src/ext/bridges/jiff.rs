@@ -12,7 +12,7 @@ fn jiff_error(err: ::jiff::Error) -> Error {
     #[allow(unused_mut)]
     let mut rv = invalid(err.to_string());
     // the errors of jiff only implement `Error` with `std`
-    #[cfg(feature = "std")]
+    #[cfg(feature = "jiff-std")]
     rv.set_source(err);
     rv
 }
