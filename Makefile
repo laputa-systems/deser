@@ -157,3 +157,10 @@ publish: ## Publish the laputa-deser packages XSH uses to the stuff crates regis
 
 publish-dry-run: ## Check the laputa-deser publish without uploading or promoting
 	stuff publish cargo $(LAPUTA_CRATES) --dry-run
+
+.PHONY: clean
+clean:
+	@if test -L ./target || { test -e ./target && ! test -d ./target; }; then \
+	  printf '%s\n' 'make clean: ./target must be a local build directory' >&2; exit 1; \
+	fi
+	rm -rf -- ./target
